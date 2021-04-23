@@ -1,8 +1,9 @@
 package com.example.jpabook_practice1.service;
 
 import com.example.jpabook_practice1.entity.Member;
+import com.example.jpabook_practice1.repository.MemberJpaRepository;
 import com.example.jpabook_practice1.repository.MemberRepository;
-import jdk.jshell.spi.ExecutionControlProvider;
+import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -12,6 +13,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class MemberService
 {
+	private final MemberJpaRepository memberJpaRepository;
 	private final MemberRepository memberRepository;
 
 	/**
@@ -24,6 +26,7 @@ public class MemberService
 		validateDuplicateMember(member); //중복 회원 검증
 
 		memberRepository.save(member);
+//		memberJpaRepository.save(member);
 		return member.getId();
 	}
 
@@ -33,7 +36,8 @@ public class MemberService
 	 */
 	private void validateDuplicateMember(Member member)
 	{
-		List<Member> findMember = memberRepository.findByUsername(member.getName());
+		List<Member> findMember = memberRepository.findByName(member.getName());
+//		List<Member> findMember = memberJpaRepository.findByUsername(member.getName());
 
 		if (!findMember.isEmpty())
 		{
@@ -48,6 +52,7 @@ public class MemberService
 	public List<Member> findMembers()
 	{
 		return memberRepository.findAll();
+//		return memberJpaRepository.findAll();
 	}
 
 	/**
@@ -57,6 +62,7 @@ public class MemberService
 	 */
 	public Member findMember(Long id)
 	{
-		return memberRepository.findOne(id);
+		return memberRepository.findById(id).get();
+//		return memberJpaRepository.findOne(id);
 	}
 }

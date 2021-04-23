@@ -2,9 +2,8 @@ package com.example.jpabook_practice1.service;
 
 import com.example.jpabook_practice1.dto.OrderSearchDto;
 import com.example.jpabook_practice1.entity.*;
-import com.example.jpabook_practice1.repository.ItemRepository;
-import com.example.jpabook_practice1.repository.MemberRepository;
-import com.example.jpabook_practice1.repository.OrderRepository;
+import com.example.jpabook_practice1.repository.*;
+import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -16,17 +15,22 @@ import java.util.List;
 @Transactional(readOnly = true)
 public class OrderService
 {
+	private final OrderJpaRepository orderJpaRepository;
+	private final ItemJpaRepository itemJpaRepository;
+	private final MemberJpaRepository memberJpaRepository;
+	private final MemberRepository memberRepository;
 	private final OrderRepository orderRepository;
 	private final ItemRepository itemRepository;
-	private final MemberRepository memberRepository;
 
 	//주문 등록
 	@Transactional
 	public Long order(Long memberId, Long itemId, int count)
 	{
 		//엔티티 조회
-		Member member = memberRepository.findOne(memberId);
-		Item item = itemRepository.findOne(itemId);
+		Member member = memberRepository.findById(memberId).get();
+//		Member member = memberJpaRepository.findOne(memberId);
+		Item item = itemRepository.findById(itemId).get();
+//		Item item = itemJpaRepository.findOne(itemId);
 
 		//배송정보 생성
 		Delivery delivery = new Delivery();
@@ -41,6 +45,7 @@ public class OrderService
 
 		//주문 저장
 		orderRepository.save(order);
+//		orderJpaRepository.save(order);
 		return order.getId();
 	}
 
@@ -49,7 +54,8 @@ public class OrderService
 	public void cancelOrder(Long orderId)
 	{
 		//주문 엔티티 조회
-		Order order = orderRepository.findOrder(orderId);
+		Order order = orderRepository.findById(orderId).get();
+//		Order order = orderJpaRepository.findOrder(orderId);
 
 		//주문 취소
 		order.cancel();
@@ -57,7 +63,8 @@ public class OrderService
 	//주문 조회
 	public List<Order> findOrders(OrderSearchDto orderSearchDto)
 	{
-		return orderRepository.findAllByJpql(orderSearchDto);
+		return orderRepository.findAll(orderSearchDto);
+//		return orderJpaRepository.findAllByJpql(orderSearchDto);
 	}
 
 }
