@@ -8,5 +8,7 @@ import java.util.List;
 public interface OrderRepositoryCustom
 {
 	//검색
-	public List<Order> findAll(OrderSearchDto orderSearchDto);
+	List<Order> findAll(OrderSearchDto orderSearchDto);
+
+	List<Order> findAllWithFetchJoin();
 }

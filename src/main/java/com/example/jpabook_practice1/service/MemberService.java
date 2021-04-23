@@ -6,8 +6,10 @@ import com.example.jpabook_practice1.repository.MemberRepository;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -64,5 +66,17 @@ public class MemberService
 	{
 		return memberRepository.findById(id).get();
 //		return memberJpaRepository.findOne(id);
+	}
+
+	/**
+	 * 수정
+	 * @param id
+	 * @param name
+	 */
+	@Transactional
+	public void update(Long id, String name)
+	{
+		Member member = memberRepository.findById(id).orElseThrow(IllegalStateException::new);
+		member.setName(name);
 	}
 }

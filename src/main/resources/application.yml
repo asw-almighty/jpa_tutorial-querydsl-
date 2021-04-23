@@ -9,9 +9,9 @@ spring:
     password:
   jpa:
     hibernate:
-      ddl-auto: none
+      ddl-auto: create
     properties:
-      show-sql: true
+#      show-sql: true
       format_sql: true
 loging.level:
   org.hibernate.SQL: debug
