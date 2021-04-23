@@ -11,4 +11,6 @@ public interface OrderRepositoryCustom
 	List<Order> findAll(OrderSearchDto orderSearchDto);
 
 	List<Order> findAllWithFetchJoin();
+	List<Order> findAllWithFetchJoinV3();
+	List<Order> findAllWithFetchJoin_page(int offset, int limit);
 }

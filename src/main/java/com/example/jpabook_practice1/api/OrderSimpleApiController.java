@@ -13,6 +13,12 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 import java.util.stream.Collectors;
 
+/**
+ * v1: 엔티티로 조회 후 반환
+ * v2: 엔티티로 조회 후 DTO 반환(페치조인x)
+ * v3: 엔티티로 조회 후 DTO 반환(페치조인o) - 최적화 방법@@@@@@@@@@@@@@@@@@@
+ * v4: DTO로 직접 조회 - 재사용성이 떨어짐!
+ */
 @RestController
 @RequiredArgsConstructor
 public class OrderSimpleApiController
@@ -116,4 +122,6 @@ public class OrderSimpleApiController
 	{
 		return orderQueryRepository.findAllWithFetchJoinAndDto();
 	}
+
+
 }
